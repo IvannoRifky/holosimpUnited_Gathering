@@ -1,0 +1,710 @@
+:root {
+    --primary-color: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-light: #e0e7ff;
+    --secondary-color: #f43f5e;
+    --secondary-light: #ffe4e6;
+    --success-color: #10b981;
+    --success-light: #d1fae5;
+    --warning-color: #f59e0b;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --whatsapp-green: #25D366;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --transition: all 0.3s ease;
+    --border-radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--gray-100);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg), 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    text-align: center;
+    padding: 40px 20px 30px;
+    position: relative;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: var(--shadow-md);
+}
+
+.community-icon {
+    width: 50px;
+    height: 50px;
+    fill: var(--primary-color);
+}
+
+.card-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.event-date {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.progress-step {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.progress-step.active {
+    background-color: white;
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.progress-line {
+    height: 2px;
+    width: 30px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 5px;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: var(--gray-800);
+}
+
+.form-description {
+    color: var(--gray-500);
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--gray-700);
+    font-size: 15px;
+}
+
+.required {
+    color: var(--secondary-color);
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    fill: var(--gray-400);
+    transition: var(--transition);
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    transition: var(--transition);
+    color: var(--gray-800);
+    background-color: white;
+    appearance: none;
+}
+
+select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.input-container.error input,
+.input-container.error select {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px var(--secondary-light);
+}
+
+.input-container.success input,
+.input-container.success select {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 3px var(--success-light);
+}
+
+.input-container.error .input-icon {
+    fill: var(--secondary-color);
+}
+
+.input-container.success .input-icon {
+    fill: var(--success-color);
+}
+
+.error-message {
+    color: var(--secondary-color);
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+}
+
+input::placeholder {
+    color: var(--gray-400);
+}
+
+.checkbox-group {
+    margin-top: 25px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding-left: 35px;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background-color: white;
+    border: 2px solid var(--gray-300);
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    border-color: var(--primary-color);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label {
+    font-size: 14px;
+    color: var(--gray-600);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 14px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 30px;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: 12px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.btn-text {
+    margin-right: 8px;
+}
+
+.btn-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.confirmation-content {
+    text-align: center;
+}
+
+.success-animation {
+    margin: 20px auto 30px;
+    width: 80px;
+    height: 80px;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: var(--success-color);
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke-width: 3;
+    stroke: var(--success-color);
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.confirmation-details {
+    background-color: var(--gray-50);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin: 20px 0;
+    line-height: 1.8;
+}
+
+.whatsapp-container {
+    background-color: var(--gray-50);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin: 25px 0;
+    border-left: 4px solid var(--whatsapp-green);
+}
+
+.whatsapp-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.whatsapp-header-icon {
+    width: 20px;
+    height: 20px;
+    fill: var(--whatsapp-green);
+    margin-right: 10px;
+}
+
+.whatsapp-container h3 {
+    font-size: 16px;
+    color: var(--gray-800);
+    margin: 0;
+}
+
+.whatsapp-container p {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 15px;
+}
+
+.whatsapp-link {
+    display: flex;
+    align-items: center;
+    background-color: var(--whatsapp-green);
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.whatsapp-link:hover {
+    background-color: #20ba5a;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.whatsapp-icon {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    margin-right: 8px;
+}
+
+.action-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.event-info {
+    width: 100%;
+    max-width: 500px;
+}
+
+.info-item {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.info-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.info-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--primary-color);
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.info-item h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: var(--gray-800);
+}
+
+.info-item p {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin: 0;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    color: var(--gray-500);
+    font-size: 14px;
+}
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    animation: slideIn 0.3s ease-out forwards;
+    z-index: 1000;
+}
+
+.toast-success {
+    border-left: 4px solid var(--success-color);
+}
+
+.toast-error {
+    border-left: 4px solid var(--secondary-color);
+}
+
+.toast-info {
+    border-left: 4px solid var(--primary-color);
+}
+
+.toast-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.toast-success .toast-icon {
+    fill: var(--success-color);
+}
+
+.toast-error .toast-icon {
+    fill: var(--secondary-color);
+}
+
+.toast-info .toast-icon {
+    fill: var(--primary-color);
+}
+
+.toast-message {
+    font-size: 14px;
+    color: var(--gray-700);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .card, .event-info {
+        max-width: 100%;
+    }
+    
+    .card-header {
+        padding: 30px 15px 25px;
+    }
+    
+    .logo {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .community-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .card-header h1 {
+        font-size: 20px;
+    }
+    
+    .progress-step {
+        padding: 5px 12px;
+        font-size: 12px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    h2 {
+        font-size: 18px;
+    }
+    
+    .btn-primary, .btn-outline {
+        padding: 12px 16px;
+    }
+    
+    .whatsapp-container, .confirmation-details {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        gap: 20px;
+    }
+    
+    .card-header h1 {
+        font-size: 18px;
+    }
+    
+    .event-date {
+        font-size: 14px;
+    }
+    
+    .progress-container {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .progress-line {
+        display: none;
+    }
+    
+    .progress-step {
+        width: 100%;
+    }
+    
+    label, .input-container input, .input-container select {
+        font-size: 14px;
+    }
+    
+    .toast {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        width: calc(100% - 20px);
+    }
+}
