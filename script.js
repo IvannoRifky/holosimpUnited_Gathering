@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const statusError = document.getElementById('status-error');
 
     const STORAGE_KEY = 'holosimp_comifuro_attendees';
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbygAhVj6TWE6YMxUbywsopGRk9hqqbOoTAP8v2vRZWI4NZogYlEs4T2s6-pciwy_5lmLA/exec'; // Ganti dengan URL hasil deploy
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfrpIBqLA74BJ9BFKnBGyywVA-lwuHgx81L-WywhvesTzWHcrY2mDW-YwQsBonWNcHTw/exec'; // Ganti dengan URL hasil deploy
     const progressSteps = document.querySelectorAll('.progress-step');
 
     // Event listeners
