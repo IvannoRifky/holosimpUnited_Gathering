@@ -151,6 +151,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ambil data yang disimpan
         const formData = JSON.parse(sessionStorage.getItem('temp_registration_data'));
         
+        console.log('Mengirim data ke Google Script:', formData);
+        console.log('URL tujuan:', GOOGLE_SCRIPT_URL);
+        
         // Kirim data ke Google Spreadsheet
         fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
@@ -158,26 +161,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(formData),
+            mode: 'cors',
+            redirect: 'follow'
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Status response:', response.status);
+            console.log('Headers:', [...response.headers.entries()]);
+            
+            return response.text().then(text => {
+                console.log('Response raw text:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    throw new Error('Invalid JSON response: ' + text);
+                }
+            });
+        })
         .then(data => {
-            console.log('Success:', data);
-            // Tandai data sebagai tersinkronisasi
-            formData.synced = true;
-            saveAttendance(formData);
-            showConfirmation(formData);
-            showLoading(false, confirmBtn);
-            updateProgressStep(2);
-            showToast('Pendaftaran berhasil!', 'success');
+            console.log('Parsed response data:', data);
+            
+            if (data && data.result === 'success') {
+                // Tandai data sebagai tersinkronisasi
+                formData.synced = true;
+                saveAttendance(formData);
+                showConfirmation(formData);
+                showLoading(false, confirmBtn);
+                updateProgressStep(2);
+                showToast('Pendaftaran berhasil!', 'success');
+            } else {
+                throw new Error('Response tidak menunjukkan sukses: ' + JSON.stringify(data));
+            }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error detail:', error);
+            
             // Jika gagal, tetap simpan di localStorage tanpa tanda sinkronisasi
+            formData.synced = false; // Pastikan tidak ditandai tersinkronisasi
             saveAttendance(formData);
             showConfirmation(formData);
             showLoading(false, confirmBtn);
             updateProgressStep(2);
-            showToast('Pendaftaran tersimpan secara lokal', 'info');
+            showToast('Pendaftaran tersimpan secara lokal. Error: ' + error.message, 'info');
         });
     }
 
@@ -404,5 +429,76 @@ document.addEventListener('DOMContentLoaded', function() {
                 toast.remove();
             }, 300);
         }, 3000);
+    }
+
+    function syncLocalData() {
+        // Periksa apakah ada data lokal
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (!savedData) return;
+        
+        try {
+            const attendees = JSON.parse(savedData);
+            if (!attendees.length) return;
+            
+            // Cek apakah ada data yang belum tersinkronisasi
+            const unsyncedAttendees = attendees.filter(data => !data.synced);
+            if (!unsyncedAttendees.length) return;
+            
+            console.log('Data yang akan disinkronkan:', unsyncedAttendees);
+            showToast('Menyinkronkan data lokal...', 'info');
+            
+            // Kirim satu per satu untuk debugging
+            unsyncedAttendees.forEach((data, index) => {
+                console.log(`Mencoba sinkronisasi data ke-${index+1}:`, data);
+                
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                    mode: 'cors', // Tambahkan mode cors
+                    redirect: 'follow' // Ikuti redirect jika ada
+                })
+                .then(response => {
+                    console.log(`Response status untuk data ke-${index+1}:`, response.status);
+                    
+                    // Log response text untuk debugging
+                    return response.text().then(text => {
+                        console.log(`Response text untuk data ke-${index+1}:`, text);
+                        try {
+                            // Coba parse sebagai JSON
+                            return JSON.parse(text);
+                        } catch (e) {
+                            console.error('Error parsing response:', e);
+                            throw new Error('Invalid JSON response: ' + text);
+                        }
+                    });
+                })
+                .then(data => {
+                    console.log(`Success for data ke-${index+1}:`, data);
+                    // Tandai sebagai tersinkronisasi jika berhasil
+                    if (data && data.result === 'success') {
+                        attendees[attendees.findIndex(a => 
+                            a.name === unsyncedAttendees[index].name && 
+                            a.phone === unsyncedAttendees[index].phone && 
+                            a.timestamp === unsyncedAttendees[index].timestamp
+                        )].synced = true;
+                        
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(attendees));
+                        showToast(`Berhasil menyinkronkan data ke-${index+1}`, 'success');
+                    } else {
+                        throw new Error('Response tidak menunjukkan sukses: ' + JSON.stringify(data));
+                    }
+                })
+                .catch(error => {
+                    console.error(`Error sinkronisasi data ke-${index+1}:`, error);
+                    showToast(`Gagal menyinkronkan: ${error.message}`, 'error');
+                });
+            });
+        } catch (e) {
+            console.error('Error saat parsing data lokal:', e);
+            showToast('Error: ' + e.message, 'error');
+        }
     }
 });
