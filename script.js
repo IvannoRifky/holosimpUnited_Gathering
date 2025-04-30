@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const statusError = document.getElementById('status-error');
 
     const STORAGE_KEY = 'holosimp_comifuro_attendees';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxlNAXv-fQeJnMfVLltN2cai5R5zsBpDsu30-q9dIal78CphQJf-xmNE5HswCVrJGMq/exec'; // Ganti dengan URL hasil deploy
     const progressSteps = document.querySelectorAll('.progress-step');
 
     // Event listeners
@@ -56,8 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
         this.value = value;
     });
 
-    // Inisialisasi form
+    // Inisialisasi form dan coba sinkronisasi data lokal
     initForm();
+    syncLocalData();
+    
+    // Coba sinkronisasi setiap 5 menit
+    setInterval(syncLocalData, 5 * 60 * 1000);
 
     function initForm() {
         resetForm(false);
@@ -146,13 +151,34 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ambil data yang disimpan
         const formData = JSON.parse(sessionStorage.getItem('temp_registration_data'));
         
-        setTimeout(() => {
+        // Kirim data ke Google Spreadsheet
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Tandai data sebagai tersinkronisasi
+            formData.synced = true;
             saveAttendance(formData);
             showConfirmation(formData);
             showLoading(false, confirmBtn);
             updateProgressStep(2);
             showToast('Pendaftaran berhasil!', 'success');
-        }, 500);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Jika gagal, tetap simpan di localStorage tanpa tanda sinkronisasi
+            saveAttendance(formData);
+            showConfirmation(formData);
+            showLoading(false, confirmBtn);
+            updateProgressStep(2);
+            showToast('Pendaftaran tersimpan secara lokal', 'info');
+        });
     }
 
     function validateField(field, errorElement) {
@@ -295,6 +321,62 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(attendees));
     }
 
+    function syncLocalData() {
+        // Periksa apakah ada data lokal
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (!savedData) return;
+        
+        try {
+            const attendees = JSON.parse(savedData);
+            if (!attendees.length) return;
+            
+            // Cek apakah ada data yang belum tersinkronisasi
+            const unsyncedAttendees = attendees.filter(data => !data.synced);
+            if (!unsyncedAttendees.length) return;
+            
+            showToast('Menyinkronkan data lokal...', 'info');
+            
+            // Membuat promises untuk semua permintaan
+            const syncPromises = unsyncedAttendees.map((data, index) => {
+                return fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(() => {
+                    // Tandai sebagai tersinkronisasi
+                    attendees[attendees.findIndex(a => 
+                        a.name === data.name && 
+                        a.phone === data.phone && 
+                        a.timestamp === data.timestamp
+                    )].synced = true;
+                    return true;
+                })
+                .catch(() => {
+                    // Gagal sinkronisasi
+                    return false;
+                });
+            });
+            
+            // Proses semua promises
+            Promise.allSettled(syncPromises)
+                .then(results => {
+                    // Perbarui status sinkronisasi di localStorage
+                    const syncedCount = results.filter(r => r.status === 'fulfilled' && r.value === true).length;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(attendees));
+                    
+                    if (syncedCount > 0) {
+                        showToast(`Berhasil menyinkronkan ${syncedCount} data`, 'success');
+                    }
+                });
+        } catch (e) {
+            console.error('Error syncing data:', e);
+        }
+    }
+
     function showToast(message, type = 'info') {
         // Hapus toast lama jika ada
         const existingToast = document.querySelector('.toast');
@@ -304,33 +386,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Buat toast baru
         const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
         
-        let iconPath = '';
-        switch (type) {
-            case 'success':
-                iconPath = 'M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z';
-                break;
-            case 'error':
-                iconPath = 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z';
-                break;
-            default:
-                iconPath = 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z';
-        }
-        
-        toast.innerHTML = `
-            <svg class="toast-icon" viewBox="0 0 24 24">
-                <path d="${iconPath}"/>
-            </svg>
-            <span class="toast-message">${message}</span>
-        `;
-        
+        // Tambahkan ke body
         document.body.appendChild(toast);
         
-        // Hilangkan toast setelah beberapa detik
+        // Tampilkan toast (dengan animasi)
         setTimeout(() => {
-            toast.style.animation = 'slideOut 0.3s ease-in-out forwards';
-            setTimeout(() => toast.remove(), 300);
+            toast.classList.add('show');
+        }, 10);
+        
+        // Hilangkan toast setelah 3 detik
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
         }, 3000);
     }
 });
