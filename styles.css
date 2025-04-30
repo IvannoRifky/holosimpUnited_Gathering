@@ -37,11 +37,27 @@ body {
     line-height: 1.6;
     color: var(--gray-800);
     background-color: var(--gray-100);
+    background-image: url('/Assets/banner.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 20px;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
 }
 
 .container {
@@ -51,6 +67,8 @@ body {
     flex-wrap: wrap;
     gap: 30px;
     justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
 .card {
@@ -86,12 +104,15 @@ body {
     justify-content: center;
     margin: 0 auto 20px;
     box-shadow: var(--shadow-md);
+    overflow: hidden;
 }
 
-.community-icon {
-    width: 50px;
-    height: 50px;
-    fill: var(--primary-color);
+.community-logo {
+    width: 100%;
+    height: 100%;
+    background-image: url('/Assets/Logo.png');
+    background-size: cover;
+    background-position: center;
 }
 
 .card-header h1 {
@@ -263,7 +284,7 @@ input::placeholder {
     width: 0;
 }
 
-.checkmark {
+.checkmarks {
     position: absolute;
     top: 0;
     left: 0;
@@ -275,26 +296,26 @@ input::placeholder {
     transition: var(--transition);
 }
 
-.checkbox-container:hover input ~ .checkmark {
+.checkbox-container:hover input ~ .checkmarks {
     border-color: var(--primary-color);
 }
 
-.checkbox-container input:checked ~ .checkmark {
+.checkbox-container input:checked ~ .checkmarks {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
-.checkmark:after {
+.checkmarks:after {
     content: "";
     position: absolute;
     display: none;
 }
 
-.checkbox-container input:checked ~ .checkmark:after {
+.checkbox-container input:checked ~ .checkmarks:after {
     display: block;
 }
 
-.checkbox-container .checkmark:after {
+.checkbox-container .checkmarks:after {
     left: 8px;
     top: 4px;
     width: 6px;
@@ -325,18 +346,6 @@ input::placeholder {
     width: 100%;
     margin-top: 30px;
     transition: var(--transition);
-    box-shadow: var(--shadow);
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-dark);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-    box-shadow: var(--shadow);
 }
 
 .btn-outline {
@@ -346,7 +355,7 @@ input::placeholder {
     border-radius: var(--border-radius);
     padding: 12px 20px;
     font-family: 'Poppins', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -355,167 +364,55 @@ input::placeholder {
     transition: var(--transition);
 }
 
-.btn-outline:hover {
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline:hover, .btn-outline:focus {
     background-color: var(--primary-light);
     transform: translateY(-2px);
 }
 
-.btn-text {
-    margin-right: 8px;
+.btn-primary:disabled, .btn-outline:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .btn-icon {
     width: 20px;
     height: 20px;
     fill: currentColor;
+    margin-left: 8px;
 }
 
-.loader {
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s linear infinite;
-    margin-right: 10px;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.hidden {
-    display: none;
-}
-
-.confirmation-content {
-    text-align: center;
-}
-
-.success-animation {
-    margin: 20px auto 30px;
-    width: 80px;
-    height: 80px;
-}
-
-.checkmark-circle {
-    stroke-dasharray: 166;
-    stroke-dashoffset: 166;
-    stroke-width: 2;
-    stroke-miterlimit: 10;
-    stroke: var(--success-color);
-    fill: none;
-    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-}
-
-.checkmark-check {
-    transform-origin: 50% 50%;
-    stroke-dasharray: 48;
-    stroke-dashoffset: 48;
-    stroke-width: 3;
-    stroke: var(--success-color);
-    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
-}
-
-@keyframes stroke {
-    100% {
-        stroke-dashoffset: 0;
-    }
-}
-
-.confirmation-details {
-    background-color: var(--gray-50);
-    border-radius: var(--border-radius);
-    padding: 20px;
-    margin: 20px 0;
-    line-height: 1.8;
-}
-
-.whatsapp-container {
-    background-color: var(--gray-50);
-    border-radius: var(--border-radius);
-    padding: 20px;
-    margin: 25px 0;
-    border-left: 4px solid var(--whatsapp-green);
-}
-
-.whatsapp-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.whatsapp-header-icon {
-    width: 20px;
-    height: 20px;
-    fill: var(--whatsapp-green);
-    margin-right: 10px;
-}
-
-.whatsapp-container h3 {
-    font-size: 16px;
-    color: var(--gray-800);
-    margin: 0;
-}
-
-.whatsapp-container p {
-    font-size: 14px;
-    color: var(--gray-600);
-    margin-bottom: 15px;
-}
-
-.whatsapp-link {
-    display: flex;
-    align-items: center;
-    background-color: var(--whatsapp-green);
-    color: white;
-    text-decoration: none;
-    padding: 12px 20px;
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-.whatsapp-link:hover {
-    background-color: #20ba5a;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
-}
-
-.whatsapp-icon {
-    width: 20px;
-    height: 20px;
-    fill: white;
+.btn-outline .btn-icon {
     margin-right: 8px;
+    margin-left: 0;
 }
 
-.action-buttons {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
+.btn-text {
+    margin-right: 5px;
 }
 
 .event-info {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
     width: 100%;
     max-width: 500px;
 }
 
 .info-item {
-    background-color: white;
-    border-radius: var(--border-radius);
-    padding: 20px;
-    margin-bottom: 15px;
     display: flex;
-    align-items: flex-start;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
+    margin-bottom: 25px;
 }
 
-.info-item:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+.info-item:last-child {
+    margin-bottom: 0;
 }
 
 .info-icon {
@@ -527,37 +424,33 @@ input::placeholder {
 }
 
 .info-item h3 {
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 5px;
     color: var(--gray-800);
 }
 
 .info-item p {
-    font-size: 14px;
     color: var(--gray-600);
-    margin: 0;
-}
-
-footer {
-    text-align: center;
-    margin-top: 50px;
-    color: var(--gray-500);
     font-size: 14px;
+    line-height: 1.5;
 }
 
-/* Toast Notifications */
+/* Toast notification */
 .toast {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    display: flex;
-    align-items: center;
     background-color: white;
-    padding: 15px 20px;
+    color: var(--gray-800);
+    padding: 12px 20px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-lg);
-    animation: slideIn 0.3s ease-out forwards;
+    display: flex;
+    align-items: center;
+    min-width: 300px;
+    max-width: 400px;
     z-index: 1000;
+    animation: slideIn 0.3s ease-in-out forwards;
 }
 
 .toast-success {
@@ -575,7 +468,8 @@ footer {
 .toast-icon {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin-right: 12px;
+    flex-shrink: 0;
 }
 
 .toast-success .toast-icon {
@@ -592,7 +486,24 @@ footer {
 
 .toast-message {
     font-size: 14px;
-    color: var(--gray-700);
+    font-weight: 500;
+}
+
+/* Loader */
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes slideIn {
@@ -617,7 +528,169 @@ footer {
     }
 }
 
-/* Media Queries */
+.hidden {
+    display: none;
+}
+
+/* Review Form Styles */
+.review-details {
+    background-color: var(--gray-50);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.review-item {
+    display: flex;
+    margin-bottom: 15px;
+    font-size: 15px;
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: 15px;
+}
+
+.review-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.review-label {
+    font-weight: 600;
+    color: var(--gray-700);
+    width: 40%;
+    padding-right: 10px;
+}
+
+.review-value {
+    color: var(--gray-800);
+    width: 60%;
+}
+
+.action-buttons-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.action-buttons-container .btn-outline {
+    width: 48%;
+}
+
+.action-buttons-container .btn-primary {
+    width: 52%;
+    margin-top: 0;
+}
+
+/* Confirmation Styles */
+.confirmation-content {
+    text-align: center;
+}
+
+.success-animation {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 30px;
+    position: relative;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke: var(--success-color);
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke-width: 3;
+    stroke: var(--success-color);
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.confirmation-details {
+    background-color: var(--success-light);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin: 25px 0;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--gray-800);
+}
+
+.whatsapp-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin: 30px 0;
+    text-align: left;
+}
+
+.whatsapp-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.whatsapp-header-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--primary-color);
+    margin-right: 10px;
+}
+
+.whatsapp-header h3 {
+    font-size: 18px;
+    color: var(--gray-800);
+    margin: 0;
+}
+
+.whatsapp-container p {
+    color: var(--gray-600);
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--whatsapp-green);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.whatsapp-link:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.whatsapp-icon {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    margin-right: 10px;
+}
+
+.action-buttons {
+    margin-top: 30px;
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
     .container {
         padding: 10px;
@@ -628,83 +701,50 @@ footer {
     }
     
     .card-header {
-        padding: 30px 15px 25px;
+        padding: 30px 15px 20px;
     }
     
     .logo {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .community-icon {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
     }
     
     .card-header h1 {
         font-size: 20px;
     }
     
-    .progress-step {
-        padding: 5px 12px;
-        font-size: 12px;
-    }
-    
     .card-body {
         padding: 20px;
     }
     
-    h2 {
-        font-size: 18px;
-    }
-    
-    .btn-primary, .btn-outline {
-        padding: 12px 16px;
-    }
-    
-    .whatsapp-container, .confirmation-details {
-        padding: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    
-    .container {
-        gap: 20px;
-    }
-    
-    .card-header h1 {
-        font-size: 18px;
-    }
-    
-    .event-date {
-        font-size: 14px;
-    }
-    
-    .progress-container {
-        flex-wrap: wrap;
-        gap: 10px;
+    .progress-step {
+        font-size: 12px;
+        padding: 5px 12px;
     }
     
     .progress-line {
-        display: none;
+        width: 20px;
     }
     
-    .progress-step {
+    .action-buttons-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .action-buttons-container .btn-outline,
+    .action-buttons-container .btn-primary {
         width: 100%;
     }
     
-    label, .input-container input, .input-container select {
-        font-size: 14px;
+    .review-item {
+        flex-direction: column;
     }
     
-    .toast {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        width: calc(100% - 20px);
+    .review-label, .review-value {
+        width: 100%;
+    }
+    
+    .review-label {
+        margin-bottom: 5px;
     }
 }

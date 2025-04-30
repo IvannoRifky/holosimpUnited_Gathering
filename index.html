@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,92 +14,124 @@
             <div class="card">
                 <div class="card-header">
                     <div class="logo">
-                        <svg viewBox="0 0 24 24" class="community-icon">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                        </svg>
+                        <div class="community-logo"></div>
                     </div>
                     <h1>Holosimp United at Comifuro XX</h1>
-                    <p class="event-date">May 24-25, 2025</p>
+                    <p class="event-date">24-25 Mei 2025</p>
                     <div class="progress-container">
                         <div class="progress-step active">Register</div>
                         <div class="progress-line"></div>
-                        <div class="progress-step">Confirm</div>
+                        <div class="progress-step">Confirmation</div>
                         <div class="progress-line"></div>
                         <div class="progress-step">Join</div>
                     </div>
                 </div>
 
                 <div id="registrationForm" class="card-body">
-                    <h2>Attendance Confirmation</h2>
-                    <p class="form-description">Confirm your attendance at our Comifuro XX meetup or register as a new member</p>
+                    <h2>Registration Form</h2>
+                    <p class="form-description">Daftar untuk gathering Comifuro XX atau bergabung sebagai anggota baru</p>
 
                     <div class="form-group">
-                        <label for="name">Full Name <span class="required">*</span></label>
+                        <label for="name">Username WhatsApp <span class="required">*</span></label>
                         <div class="input-container">
                             <svg class="input-icon" viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>
-                            <input type="text" id="name" placeholder="Enter your full name" required autocomplete="name">
+                            <input type="text" id="name" placeholder="Masukkan username WhatsApp" required autocomplete="name">
                         </div>
-                        <div class="error-message" id="name-error">Please enter your name</div>
+                        <div class="error-message" id="name-error">Silakan masukkan username WhatsApp</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="location">Where are you coming from? <span class="required">*</span></label>
+                        <label for="phone">Nomor WhatsApp <span class="required">*</span></label>
+                        <div class="input-container">
+                            <svg class="input-icon" viewBox="0 0 24 24">
+                                <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                            </svg>
+                            <input type="tel" id="phone" placeholder="Contoh: 08123456789" required>
+                        </div>
+                        <div class="error-message" id="phone-error">Silakan masukkan nomor WhatsApp</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Kamu domisili mana? <span class="required">*</span></label>
                         <div class="input-container">
                             <svg class="input-icon" viewBox="0 0 24 24">
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                             </svg>
-                            <input type="text" id="location" placeholder="City, Country" required>
+                            <input type="text" id="location" placeholder="Kota" required>
                         </div>
-                        <div class="error-message" id="location-error">Please enter your location</div>
+                        <div class="error-message" id="location-error">Silakan masukkan domisili</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="attendance-day">Which day will you attend? <span class="required">*</span></label>
+                        <label for="attendance-day">Kapan kamu akan hadir? <span class="required">*</span></label>
                         <div class="input-container">
                             <svg class="input-icon" viewBox="0 0 24 24">
                                 <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
                             </svg>
                             <select id="attendance-day" required>
-                                <option value="" disabled selected>Select day</option>
-                                <option value="Saturday, May 24">Saturday, May 24</option>
-                                <option value="Sunday, May 25">Sunday, May 25</option>
-                                <option value="All days">All days (Sat-Sun)</option>
+                                <option value="" disabled selected>Pilih hari</option>
+                                <option value="Sabtu, 24 Mei">Sabtu, 24 Mei</option>
+                                <option value="Minggu, 25 Mei">Minggu, 25 Mei</option>
+                                <option value="Semua hari">Semua hari (Sab-Min)</option>
                             </select>
                         </div>
-                        <div class="error-message" id="day-error">Please select a day</div>
+                        <div class="error-message" id="day-error">Silakan pilih hari kehadiran</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="member-status">Membership Status <span class="required">*</span></label>
+                        <label for="member-status">Status Keanggotaan <span class="required">*</span></label>
                         <div class="input-container">
                             <svg class="input-icon" viewBox="0 0 24 24">
                                 <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
                             </svg>
                             <select id="member-status" required>
-                                <option value="" disabled selected>Select status</option>
-                                <option value="Existing Member">I'm already a member</option>
-                                <option value="New Member">I want to join Holosimp United</option>
+                                <option value="" disabled selected>Pilih status</option>
+                                <option value="Existing Member">Saya sudah menjadi anggota</option>
+                                <option value="New Member">Saya ingin bergabung dengan Holosimp United</option>
                             </select>
                         </div>
-                        <div class="error-message" id="status-error">Please select your membership status</div>
+                        <div class="error-message" id="status-error">Silakan pilih status keanggotaan</div>
                     </div>
 
                     <div class="form-group checkbox-group">
                         <label class="checkbox-container">
                             <input type="checkbox" id="newsletter">
-                            <span class="checkmark"></span>
-                            <span class="checkbox-label">Keep me updated about future events</span>
+                            <span class="checkmarks"></span>
+                            <span class="checkbox-label">Beritahu saya tentang event-event mendatang</span>
                         </label>
                     </div>
 
                     <button type="button" id="submitBtn" class="btn-primary">
-                        <span class="btn-text">Confirm Attendance</span>
+                        <span class="btn-text">Review Information</span>
                         <svg class="btn-icon" viewBox="0 0 24 24">
                             <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
                         </svg>
                     </button>
+                </div>
+
+                <!-- Bagian Tinjauan Formulir -->
+                <div id="reviewForm" class="card-body hidden">
+                    <h2>Periksa Informasi Anda</h2>
+                    <p class="form-description">Pastikan semua data berikut sudah benar sebelum menyelesaikan pendaftaran</p>
+
+                    <div id="reviewDetails" class="review-details"></div>
+
+                    <div class="action-buttons-container">
+                        <button type="button" id="editBtn" class="btn-outline">
+                            <svg class="btn-icon" viewBox="0 0 24 24">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                            </svg>
+                            <span>Edit Informasi</span>
+                        </button>
+                        <button type="button" id="confirmBtn" class="btn-primary">
+                            <span class="btn-text">Konfirmasi & Daftar</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div id="confirmationMessage" class="card-body hidden">
@@ -111,7 +143,7 @@
                             </svg>
                         </div>
 
-                        <h2>See you at Comifuro XX!</h2>
+                        <h2>Sampai jumpa di Comifuro XX!</h2>
                         <div id="confirmationDetails" class="confirmation-details"></div>
 
                         <div class="whatsapp-container">
@@ -119,15 +151,15 @@
                                 <svg class="whatsapp-header-icon" viewBox="0 0 24 24">
                                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17h-2v-2h2v2zm2.07-7.75l-.9.92C11.45 12.9 11 13.5 11 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
                                 </svg>
-                                <h3>Join Our Community Group</h3>
+                                <h3>Gabung Grup Komunitas Kami</h3>
                             </div>
-                            <p>Connect with other Holosimp United members and receive updates about the Comifuro XX meetup:</p>
+                            <p>Terhubung dengan anggota Holosimp United lainnya dan dapatkan update tentang gathering Comifuro XX:</p>
                             <a href="https://chat.whatsapp.com/IRurgsHHhHhKrCwLIMAKf6" class="whatsapp-link" target="_blank" rel="noopener noreferrer">
                                 <svg class="whatsapp-icon" viewBox="0 0 24 24">
                                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.148-.644-.05-.297-.197-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path>
                                     <path d="M12 1c-6.071 0-11 4.929-11 11 0 2.472.81 4.757 2.178 6.602l-1.428 4.298 4.298-1.428A10.97 10.97 0 0012 23c6.071 0 11-4.929 11-11s-4.929-11-11-11zm0 19c-1.764 0-3.464-.592-4.846-1.643l-.508.307-3.143 1.049 1.049-3.143.307-.508A7.955 7.955 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"></path>
                                 </svg>
-                                <span>Join Whatsapp Group</span>
+                                <span>Gabung Grup WhatsApp</span>
                             </a>
                         </div>
 
@@ -136,7 +168,7 @@
                                 <svg class="btn-icon" viewBox="0 0 24 24">
                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                                 </svg>
-                                <span>Register Another Person</span>
+                                <span>Daftarkan Orang Lain</span>
                             </button>
                         </div>
                     </div>
@@ -149,7 +181,7 @@
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                     </svg>
                     <div>
-                        <h3>Location</h3>
+                        <h3>Lokasi</h3>
                         <p>Loading Dock Hall 10<br>ICE BSD<br>Tangerang</p>
                     </div>
                 </div>
@@ -158,8 +190,8 @@
                         <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
                     </svg>
                     <div>
-                        <h3>Date & Time</h3>
-                        <p>May 24-25, 2025<br>10:00 AM - 6:00 PM</p>
+                        <h3>Tanggal & Waktu</h3>
+                        <p>24-25 Mei 2025<br>10:00 - 18:00 WIB</p>
                     </div>
                 </div>
                 <div class="info-item">
@@ -167,25 +199,12 @@
                         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                     </svg>
                     <div>
-                        <h3>Contact</h3>
+                        <h3>Kontak</h3>
                         <p>Pano<br>+62 895-3464-39493</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <svg class="info-icon" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
-                    </svg>
-                    <div>
-                        <h3>Event Info</h3>
-                        <p>Comifuro XX<br>Holosimp United Gathering</p>
                     </div>
                 </div>
             </div>
         </div>
-
-        <footer>
-            <p>&copy; 2025 Holosimp United. All rights reserved.</p>
-        </footer>
 
         <script src="script.js"></script>
     </body>
