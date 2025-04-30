@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const statusError = document.getElementById('status-error');
 
     const STORAGE_KEY = 'holosimp_comifuro_attendees';
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzgQ25xGC4etkEiNdL-B-frUj_AS6KqswZSrbgrd0kKoFk7L-dD7VgOKgSxKq8Nq8gQmQ/exec'; 
     const progressSteps = document.querySelectorAll('.progress-step');
 
     // Event listeners
@@ -57,41 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
         this.value = value;
     });
 
-    // Inisialisasi form dan coba sinkronisasi data lokal
+    // Inisialisasi form
     initForm();
-    syncLocalData();
-    
-    // Coba sinkronisasi setiap 5 menit
-    setInterval(syncLocalData, 5 * 60 * 1000);
-
-    // Add missing showToast function
-    function showToast(message, type = 'info') {
-        // Create toast container if it doesn't exist
-        let toastContainer = document.querySelector('.toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.className = 'toast-container';
-            document.body.appendChild(toastContainer);
-        }
-
-        // Create toast element
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = message;
-        
-        // Add to container
-        toastContainer.appendChild(toast);
-        
-        // Auto remove after 3 seconds
-        setTimeout(() => {
-            toast.classList.add('fade-out');
-            setTimeout(() => {
-                if (toastContainer.contains(toast)) {
-                    toastContainer.removeChild(toast);
-                }
-            }, 300);
-        }, 3000);
-    }
 
     function initForm() {
         resetForm(false);
@@ -180,42 +146,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ambil data yang disimpan
         const formData = JSON.parse(sessionStorage.getItem('temp_registration_data'));
         
-        console.log('Mengirim data ke Google Script:', formData);
-        console.log('URL tujuan:', GOOGLE_SCRIPT_URL);
-        
-        // Kirim data ke Google Spreadsheet - dengan FormData untuk menghindari CORS issues
-        const payload = new FormData();
-        payload.append('data', JSON.stringify(formData));
-        
-        fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            body: payload,
-            mode: 'no-cors', // Keep no-cors mode
-        })
-        .then(response => {
-            console.log('Status response:', response.status);
-            // Note: With no-cors mode, we can't access the response content
-            // So let's assume success and save the data locally
-            
-            // Tandai data sebagai partially synced (attempted)
-            formData.synced = true; // optimistically assume it worked
+        setTimeout(() => {
             saveAttendance(formData);
             showConfirmation(formData);
             showLoading(false, confirmBtn);
             updateProgressStep(2);
-            showToast('Pendaftaran berhasil! (Mode no-cors)', 'success');
-        })
-        .catch(error => {
-            console.error('Error detail:', error);
-            
-            // Jika gagal, tetap simpan di localStorage tanpa tanda sinkronisasi
-            formData.synced = false;
-            saveAttendance(formData);
-            showConfirmation(formData);
-            showLoading(false, confirmBtn);
-            updateProgressStep(2);
-            showToast('Pendaftaran tersimpan secara lokal. Error: ' + error.message, 'info');
-        });
+            showToast('Pendaftaran berhasil!', 'success');
+        }, 500);
     }
 
     function validateField(field, errorElement) {
@@ -358,78 +295,42 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(attendees));
     }
 
-    function syncLocalData() {
-        // Periksa apakah ada data lokal
-        const savedData = localStorage.getItem(STORAGE_KEY);
-        if (!savedData) return;
-        
-        try {
-            const attendees = JSON.parse(savedData);
-            if (!attendees.length) return;
-            
-            // Cek apakah ada data yang belum tersinkronisasi
-            const unsyncedAttendees = attendees.filter(data => !data.synced);
-            if (!unsyncedAttendees.length) return;
-            
-            console.log('Data yang akan disinkronkan:', unsyncedAttendees);
-            showToast('Menyinkronkan data lokal...', 'info');
-            
-            // Kirim satu per satu untuk debugging
-            unsyncedAttendees.forEach((data, index) => {
-                console.log(`Mencoba sinkronisasi data ke-${index+1}:`, data);
-                
-                // Gunakan FormData untuk menghindari masalah CORS
-                const payload = new FormData();
-                payload.append('data', JSON.stringify(data));
-                
-                fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: payload,
-                    mode: 'no-cors', // Changed to no-cors mode
-                })
-                .then(response => {
-                    console.log(`Response status untuk data ke-${index+1}:`, response.status);
-                    
-                    // With no-cors mode, we can't access the response
-                    // so let's assume success
-                    attendees[attendees.findIndex(a => 
-                        a.name === unsyncedAttendees[index].name && 
-                        a.phone === unsyncedAttendees[index].phone && 
-                        a.timestamp === unsyncedAttendees[index].timestamp
-                    )].synced = true;
-                    
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(attendees));
-                    showToast(`Berhasil menyinkronkan data ke-${index+1}`, 'success');
-                })
-                .catch(error => {
-                    console.error(`Error sinkronisasi data ke-${index+1}:`, error);
-                    showToast(`Gagal menyinkronkan: ${error.message}`, 'error');
-                });
-            });
-        } catch (e) {
-            console.error('Error saat parsing data lokal:', e);
-            showToast('Error: ' + e.message, 'error');
+    function showToast(message, type = 'info') {
+        // Hapus toast lama jika ada
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) {
+            existingToast.remove();
         }
-    }
-
-    // Basic test connection function
-    function testGoogleScriptConnection() {
-        console.log('Testing connection to Google Script URL...');
         
-        fetch(GOOGLE_SCRIPT_URL, {
-            method: 'GET',
-            mode: 'no-cors', // Using no-cors mode
-        })
-        .then(response => {
-            console.log('Connection test response status:', response.status);
-            console.log('Connection to Google Script appears to be working in no-cors mode');
-            showToast('Koneksi ke Google Script berhasil diuji', 'info');
-        })
-        .catch(error => {
-            console.error('Connection test error:', error);
-            showToast('Koneksi ke Google Script gagal: ' + error.message, 'error');
-        });
-    }    
-    // Run connection test
-    testGoogleScriptConnection();
+        // Buat toast baru
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        
+        let iconPath = '';
+        switch (type) {
+            case 'success':
+                iconPath = 'M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z';
+                break;
+            case 'error':
+                iconPath = 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z';
+                break;
+            default:
+                iconPath = 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z';
+        }
+        
+        toast.innerHTML = `
+            <svg class="toast-icon" viewBox="0 0 24 24">
+                <path d="${iconPath}"/>
+            </svg>
+            <span class="toast-message">${message}</span>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Hilangkan toast setelah beberapa detik
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease-in-out forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
 });
