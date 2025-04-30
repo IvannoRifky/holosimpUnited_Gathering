@@ -64,6 +64,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // Coba sinkronisasi setiap 5 menit
     setInterval(syncLocalData, 5 * 60 * 1000);
 
+    // Add missing showToast function
+    function showToast(message, type = 'info') {
+        // Create toast container if it doesn't exist
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container';
+            document.body.appendChild(toastContainer);
+        }
+
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = message;
+        
+        // Add to container
+        toastContainer.appendChild(toast);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            toast.classList.add('fade-out');
+            setTimeout(() => {
+                if (toastContainer.contains(toast)) {
+                    toastContainer.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
     function initForm() {
         resetForm(false);
         updateProgressStep(0);
@@ -154,14 +183,14 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Mengirim data ke Google Script:', formData);
         console.log('URL tujuan:', GOOGLE_SCRIPT_URL);
         
-        // Kirim data ke Google Spreadsheet - UPDATED TO USE NO-CORS MODE
+        // Kirim data ke Google Spreadsheet - dengan FormData untuk menghindari CORS issues
+        const payload = new FormData();
+        payload.append('data', JSON.stringify(formData));
+        
         fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-            mode: 'no-cors', // Changed to no-cors mode
+            body: payload,
+            mode: 'no-cors', // Keep no-cors mode
         })
         .then(response => {
             console.log('Status response:', response.status);
@@ -349,12 +378,13 @@ document.addEventListener('DOMContentLoaded', function() {
             unsyncedAttendees.forEach((data, index) => {
                 console.log(`Mencoba sinkronisasi data ke-${index+1}:`, data);
                 
+                // Gunakan FormData untuk menghindari masalah CORS
+                const payload = new FormData();
+                payload.append('data', JSON.stringify(data));
+                
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
+                    body: payload,
                     mode: 'no-cors', // Changed to no-cors mode
                 })
                 .then(response => {
@@ -393,12 +423,13 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => {
             console.log('Connection test response status:', response.status);
             console.log('Connection to Google Script appears to be working in no-cors mode');
+            showToast('Koneksi ke Google Script berhasil diuji', 'info');
         })
         .catch(error => {
             console.error('Connection test error:', error);
+            showToast('Koneksi ke Google Script gagal: ' + error.message, 'error');
         });
-    }
-    
+    }    
     // Run connection test
     testGoogleScriptConnection();
 });
